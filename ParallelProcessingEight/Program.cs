@@ -78,6 +78,7 @@ namespace ParallelProcessingEight
 
             Console.WriteLine();
             Console.WriteLine("Adding more vat using Parallel ForEach on single widgets.");
+            // Parallel ForEach is clearly faster (great for CPU bound work) but Parallel ForEachAsync is more robust for async operations involving db and api calls.
             Measure("Vat added using Parallel ForEach on single widgets dictionary.AddSingleVat().",
                 () => Parallel.ForEach<KeyValuePair<string, Widget>>(concrete.widgets, _ => concrete.AddSingleVat(_, rate)));
             if (concrete.widgets.TryGetValue(key, out postForeachVat))
@@ -86,6 +87,7 @@ namespace ParallelProcessingEight
                 Console.WriteLine("Key not found after Parallel.ForEach: " + key);
 
             Console.WriteLine();
+            // Parallel ForEach is clearly faster (great for CPU bound work) but Parallel ForEachAsync is more robust for async operations involving db and api calls.
             Console.WriteLine("Adding more vat using Parallel ForEachAsync on single widgets.");
             await MeasureAsync("Vat added using Parallel ForEachAsync on single widgets dictionary.AddSingleVat().",
                 () => Parallel.ForEachAsync<KeyValuePair<string, Widget>>(concrete.widgets, async (pair, ct) => concrete.AddSingleVatAsync(pair, rate)));
@@ -139,6 +141,7 @@ namespace ParallelProcessingEight
                 Console.WriteLine("Key not found after ParralelForOptionsVat: " + key);
 
             Console.WriteLine();
+            // Parallel ForEach is clearly faster (great for CPU bound work) but Parallel ForEachAsync is more robust for async operations involving db and api calls.
             count = await MeasureAsync("Vat added using dictionary.ParallelForEachOptionsVat().", () => Task.Run(() => concrete.ParallelForEachOptionsVat(parallelOptions, rate)));
             Console.WriteLine("{0}, {1}", "Vat added using dictionary.ParallelForEachOptionsVat(). No of widgets: ", count);
             if (concrete.widgets.TryGetValue(key, out parpostOptionsVat))
@@ -147,6 +150,7 @@ namespace ParallelProcessingEight
                 Console.WriteLine("Key not found after ParralelForEachOptionsVat: " + key);
 
             Console.WriteLine();
+            // Parallel ForEach is clearly faster (great for CPU bound work) but Parallel ForEachAsync is more robust for async operations involving db and api calls.
             count = await MeasureAsync("Vat added using dictionary.ParallelForEachAsyncOptionsVat().", () => Task.Run(() => concrete.ParallelForEachAsyncOptionsVat(parallelOptions, rate)));
             Console.WriteLine("{0}, {1}", "Vat added using dictionary.ParallelForEachAsyncOptionsVat(). No of widgets: ", count);
             if (concrete.widgets.TryGetValue(key, out parpostOptionsAsyncVat))
